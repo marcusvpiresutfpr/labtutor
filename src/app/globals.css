@@ -5,3 +5,13 @@
 body  {
   --navbar-padding: 1rem 3rem;
 }
+
+.tiptap.ProseMirror {
+  flex-grow: 1;
+  height: 0;
+  overflow: auto;
+}
+
+.tiptap.ProseMirror:focus {
+  outline: none;
+}

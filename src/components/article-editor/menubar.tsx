@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import MenuItem from "./menuitem";
 
-import { Editor } from '@tiptap/react';
+import { Editor } from "@tiptap/react";
 
 interface MenuItemProps {
   editor: Editor;
@@ -11,25 +11,25 @@ const MenuBar = ({ editor }: MenuItemProps) => {
   const items = [
     {
       icon: "bold",
-      title: "Bold",
+      title: "Negrito",
       action: () => editor.chain().focus().toggleBold().run(),
       isActive: () => editor.isActive("bold"),
     },
     {
       icon: "italic",
-      title: "Italic",
+      title: "Itálico",
       action: () => editor.chain().focus().toggleItalic().run(),
       isActive: () => editor.isActive("italic"),
     },
     {
       icon: "strikethrough",
-      title: "Strike",
+      title: "Riscado",
       action: () => editor.chain().focus().toggleStrike().run(),
       isActive: () => editor.isActive("strike"),
     },
     {
       icon: "code-view",
-      title: "Code",
+      title: "Código",
       action: () => editor.chain().focus().toggleCode().run(),
       isActive: () => editor.isActive("code"),
     },
@@ -38,37 +38,37 @@ const MenuBar = ({ editor }: MenuItemProps) => {
     },
     {
       icon: "h-1",
-      title: "Heading 1",
+      title: "Título 1",
       action: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
       isActive: () => editor.isActive("heading", { level: 1 }),
     },
     {
       icon: "h-2",
-      title: "Heading 2",
+      title: "Título 2",
       action: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
       isActive: () => editor.isActive("heading", { level: 2 }),
     },
     {
       icon: "paragraph",
-      title: "Paragraph",
+      title: "Parágrafo",
       action: () => editor.chain().focus().setParagraph().run(),
       isActive: () => editor.isActive("paragraph"),
     },
     {
       icon: "list-unordered",
-      title: "Bullet List",
+      title: "Lista com Marcadores",
       action: () => editor.chain().focus().toggleBulletList().run(),
       isActive: () => editor.isActive("bulletList"),
     },
     {
       icon: "list-ordered",
-      title: "Ordered List",
+      title: "Lista Numerada",
       action: () => editor.chain().focus().toggleOrderedList().run(),
       isActive: () => editor.isActive("orderedList"),
     },
     {
       icon: "code-box-line",
-      title: "Code Block",
+      title: "Bloco de Código",
       action: () => editor.chain().focus().toggleCodeBlock().run(),
       isActive: () => editor.isActive("codeBlock"),
     },
@@ -77,13 +77,13 @@ const MenuBar = ({ editor }: MenuItemProps) => {
     },
     {
       icon: "double-quotes-l",
-      title: "Blockquote",
+      title: "Citação em Bloco",
       action: () => editor.chain().focus().toggleBlockquote().run(),
       isActive: () => editor.isActive("blockquote"),
     },
     {
       icon: "separator",
-      title: "Horizontal Rule",
+      title: "Régua Horizontal",
       action: () => editor.chain().focus().setHorizontalRule().run(),
     },
     {
@@ -91,12 +91,12 @@ const MenuBar = ({ editor }: MenuItemProps) => {
     },
     {
       icon: "text-wrap",
-      title: "Hard Break",
+      title: "Quebra de Linha",
       action: () => editor.chain().focus().setHardBreak().run(),
     },
     {
       icon: "format-clear",
-      title: "Clear Format",
+      title: "Limpar Formatação",
       action: () => editor.chain().focus().clearNodes().unsetAllMarks().run(),
     },
     {
@@ -104,28 +104,28 @@ const MenuBar = ({ editor }: MenuItemProps) => {
     },
     {
       icon: "arrow-go-back-line",
-      title: "Undo",
+      title: "Desfazer",
       action: () => editor.chain().focus().undo().run(),
     },
     {
       icon: "arrow-go-forward-line",
-      title: "Redo",
+      title: "Refazer",
       action: () => editor.chain().focus().redo().run(),
     },
   ];
 
   return (
-    <div className="menu menu-vertical lg:menu-horizontal bg-base-200 rounded-box">
+    <ul className="menu menu-vertical lg:menu-horizontal bg-base-200 rounded-box">
       {items.map((item, index) => (
         <Fragment key={index}>
           {item.type === "divider" ? (
-            <div className="divider" />
+            <div className="divider divider-horizontal" />
           ) : (
             <MenuItem {...item} />
           )}
         </Fragment>
       ))}
-    </div>
+    </ul>
   );
 };
 

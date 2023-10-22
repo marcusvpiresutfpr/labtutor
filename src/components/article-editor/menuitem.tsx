@@ -8,12 +8,11 @@ type MenuItemProps = {
 };
 
 const MenuItem: React.FunctionComponent<MenuItemProps> = ({ icon, title, action, isActive = null }) => (
-  <button
-    className={`menu-item${isActive && isActive() ? " is-active" : ""}`}
+  <li
     onClick={action}
     title={title}>
-    <i className={`ri-${icon}`}></i>
-  </button>
+    <i className={`${isActive && isActive() ? "active" : ""} ri-${icon}`}></i>
+  </li>
 );
 
 export default MenuItem;
