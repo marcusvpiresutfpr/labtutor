@@ -10,10 +10,17 @@
   },
   "dependencies": {
     "@prisma/client": "^5.4.2",
+    "@tailwindcss/typography": "^0.5.10",
+    "@tiptap/extension-character-count": "^2.1.12",
+    "@tiptap/pm": "^2.1.12",
+    "@tiptap/react": "^2.1.12",
+    "@tiptap/starter-kit": "^2.1.12",
     "next": "13.5.6",
     "next-auth": "^4.24.3",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-textarea-autosize": "^8.5.3",
+    "remixicon": "^3.5.0"
   },
   "devDependencies": {
     "@types/node": "^20",

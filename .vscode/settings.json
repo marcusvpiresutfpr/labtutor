@@ -1,18 +1,18 @@
 {
   "files.exclude": {
-    "node_modules": true,
-    ".vscode": true,
-    ".next": true,
-    ".git": true,
-    "tsconfig.json": true,
-    "prisma": true,
     ".env": true,
     ".eslintrc.json": true,
+    ".git": true,
     ".gitignore": true,
+    ".next": true,
+    ".vscode": true,
     "next-env.d.ts": true,
     "next.config.js": true,
     "package-lock.json": true,
     "postcss.config.js": true,
-    "tailwind.config.ts": true
+    "prisma": true,
+    "tailwind.config.ts": true,
+    "tsconfig.json": true,
+    "node_modules": true
   }
 }
