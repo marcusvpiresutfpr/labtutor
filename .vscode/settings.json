@@ -10,7 +10,6 @@
     "next.config.js": true,
     "package-lock.json": true,
     "postcss.config.js": true,
-    "prisma": true,
     "tailwind.config.ts": true,
     "tsconfig.json": true,
     "node_modules": true

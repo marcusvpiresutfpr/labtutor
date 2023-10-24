@@ -115,7 +115,7 @@ const MenuBar = ({ editor }: MenuItemProps) => {
   ];
 
   return (
-    <ul className="menu menu-vertical lg:menu-horizontal bg-base-200 rounded-box">
+    <ul id="toolbar" className={`z-20 menu menu-vertical lg:menu-horizontal bg-base-200 w-full sticky top-0 justify-center`}>
       {items.map((item, index) => (
         <Fragment key={index}>
           {item.type === "divider" ? (

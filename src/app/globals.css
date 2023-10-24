@@ -8,8 +8,7 @@ body  {
 
 .tiptap.ProseMirror {
   flex-grow: 1;
-  height: 0;
-  overflow: auto;
+  padding: 2rem;
 }
 
 .tiptap.ProseMirror:focus {
