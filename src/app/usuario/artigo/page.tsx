@@ -10,6 +10,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 
 const ArticleEditor = () => {
   const [actionLoading, setActionLoading] = React.useState("");
+  const [articleId, setArticleId] = React.useState("");
   const [errors, setErrors] = React.useState([]);
   const [title, setTitle] = React.useState("");
 
@@ -17,20 +18,37 @@ const ArticleEditor = () => {
     extensions: [StarterKit, CharacterCount.configure({ limit: 10000 })],
   });
 
-  const handleSave = async () => {
+  const handleSave = async (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
     setActionLoading("save");
     try {
       const content = editor?.getHTML() ?? "";
-      const response = await fetch("/api/article", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ title, content }),
-      });
-      if (response.ok) {
-        const result = await response.json();
-        console.log("Response ID:", result.article_id);
+      const articleData = { title, content };
+
+      if (articleId) {
+        const response = await fetch(`/api/article/${articleId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(articleData),
+        });
+        if (response.ok) {
+          console.log("Article updated successfully.");
+        } else {
+          console.error("Failed to update the article.");
+        }
       } else {
-        console.error("Failed to save the article.");
+        const response = await fetch("/api/article", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(articleData),
+        });
+        if (response.ok) {
+          const result = await response.json();
+          console.log("Article created with ID:", result.article_id);
+          setArticleId(result.article_id);
+        } else {
+          console.error("Failed to create the article.");
+        }
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -38,7 +56,6 @@ const ArticleEditor = () => {
       setActionLoading("");
     }
   };
-  
 
   if (editor)
     return (
@@ -54,15 +71,20 @@ const ArticleEditor = () => {
 
           <div className="navbar-center">LABTUTOR</div>
           <div className="navbar-end">
-            <button className={`btn ${actionLoading != '' && "opacity-75"}`} onClick={handleSave}>
+            <button
+              className={`btn ${actionLoading != "" && "opacity-75"}`}
+              onClick={handleSave}>
               {actionLoading === "save" ? (
                 <span className="loading loading-spinner w-6"></span>
-                ) : (
+              ) : (
                 <i className="ri-save-line w-6"></i>
               )}
               SALVAR
             </button>
-            <button className={`btn btn-primary ml-4 ${actionLoading != '' && "opacity-75"}`}>
+            <button
+              className={`btn btn-primary ml-4 ${
+                actionLoading != "" && "opacity-75"
+              }`}>
               <i className="ri-earth-line w-6"></i>
               PUBLICAR
             </button>
