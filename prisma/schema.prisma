@@ -50,7 +50,7 @@ model User {
   name          String?
   image         String?
   email         String?   @unique
-  role          String?   @default("USER")
+  role          Int?      @default(10)
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   emailVerified DateTime?

@@ -2,8 +2,8 @@
 
 import CharacterCount from "@tiptap/extension-character-count";
 import StarterKit from "@tiptap/starter-kit";
-import toast from "react-hot-toast";
 import MenuBar from "./menubar";
+import toast from "react-hot-toast";
 import Link from "next/link";
 
 import { EditorContent, useEditor } from "@tiptap/react";
@@ -12,10 +12,10 @@ import { redirect } from "next/navigation";
 
 interface ArticleEditorProps {
   article: {
-    id: string;
     content: String | null;
-    title: string;
     author: { email: string | null };
+    title: string;
+    id: string;
   };
 }
 
