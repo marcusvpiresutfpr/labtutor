@@ -4,9 +4,9 @@ import "./globals.css";
 import Provider from "../components/provider";
 
 import { getServerSession } from "next-auth/next";
+import { Toaster } from 'react-hot-toast';
 import { authOptions } from "@/lib/auth";
 import { Inter } from "next/font/google";
-
 import type { Metadata } from "next";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,6 +22,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
     <html lang="pt-br" data-theme="bumblebee">
       <body className={inter.className}>
         <Provider session={session}>{props.children}</Provider>
+        <Toaster />
       </body>
     </html>
   );

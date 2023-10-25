@@ -68,3 +68,37 @@ export async function PUT(
     });
   }
 }
+
+export async function GET(
+  request: Request,
+  { params }: { params: { slug: string } }
+) {
+  try {
+    const id = params.slug;
+
+    const article = await prisma.article.findUnique({
+      where: { id: id },
+      select: {
+        title: true,
+        content: true,
+      },
+    });
+
+    if (!article) {
+      return new NextResponse(JSON.stringify({ error: "Article not found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    return new NextResponse(JSON.stringify(article), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error: any) {
+    return new NextResponse(JSON.stringify({ error: error }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+}

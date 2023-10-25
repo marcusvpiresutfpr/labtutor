@@ -17,7 +17,7 @@ export async function POST(request: Request) {
           author: { connect: { email: session?.user?.email } },
         },
       });
-      return new NextResponse(JSON.stringify({ article_id: result.id }), {
+      return new NextResponse(JSON.stringify({ id: result.id }), {
         status: 201,
         headers: { "Content-Type": "application/json" },
       });
