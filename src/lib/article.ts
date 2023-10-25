@@ -1,53 +1,21 @@
-export interface Result {
-  status: number;
-  id: string | null;
-  ok: boolean;
-  error?: any;
-}
+import prisma from "@/lib/prisma";
 
-export const create_article = async (title: string, content: string) => {
-  var result: Result;
-  try {
-    const response = await fetch(`/api/article`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, content }),
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "@/lib/auth";
+
+export const get_article = async (id: string) => {
+  const session = await getServerSession(authOptions);
+  const email = session?.user?.email;
+  if (email) {
+    const article = await prisma.article.findUnique({
+      where: { id: id, author: { email: email } },
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        author: { select: { email: true } },
+      },
     });
-    const _result = await response.json();
-    result = {
-      status: response.status,
-      id: _result.id,
-      ok: response.ok,
-    };
-  } catch (error) {
-    result = {
-      status: 500,
-      id: null,
-      ok: false,
-      error: error,
-    };
-  }
+    return article;
+  } else return null;
 };
-
-const update_article = async (id: string, title: string, content: string) => {
-  try {
-    const response = await fetch(`/api/article/${id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ title, content }),
-    });
-    const result = await response.json();
-    return {
-      status: response.status,
-      id: result.id,
-      ok: response.ok,
-    };
-  } catch (error) {
-    return {
-      status: 500,
-      id: null,
-      ok: false,
-      error: error,
-    };
-  }
-}

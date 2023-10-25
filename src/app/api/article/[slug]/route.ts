@@ -1,63 +1,29 @@
 import prisma from "@/lib/prisma";
 
-import { getServerSession } from "next-auth/next";
 import { NextResponse } from "next/server";
+import { get_article } from "@/lib/article";
 import { authOptions } from "@/lib/auth";
 
-export async function PUT(
-  request: Request,
-  { params }: { params: { slug: string } }
-) {
+type Params = {
+  slug: string;
+};
+
+export async function PUT(request: Request, { params }: { params: Params }) {
   try {
-    const session = await getServerSession(authOptions);
-    const { title, content } = await request.json();
-    const id = params.slug;
-
-    if (session?.user?.email) {
-      const article = await prisma.article.findUnique({
-        where: { id: id },
-        select: {
-          content: true,
-          title: true,
-          author: { select: { email: true } },
-        },
+    const article = await get_article(params.slug);
+    if (!article) {
+      return new NextResponse(JSON.stringify({ error: "Article not found" }), {
+        status: 404,
+        headers: { "Content-Type": "application/json" },
       });
-
-      if (!article) {
-        const result = await prisma.article.create({
-          data: {
-            title: title,
-            content: content,
-            author: { connect: { email: session?.user?.email } },
-          },
-        });
-        return new NextResponse(JSON.stringify({ article_id: result.id }), {
-          status: 201,
-          headers: { "Content-Type": "application/json" },
-        });
-      }
-
-      if (article?.author?.email === session.user.email) {
-        const result = await prisma.article.update({
-          where: { id: id },
-          data: {
-            title: title,
-            content: content,
-          },
-        });
-        return new NextResponse(JSON.stringify({ article_id: result.id }), {
-          status: 200,
-          headers: { "Content-Type": "application/json" },
-        });
-      } else {
-        return new NextResponse(JSON.stringify({ error: "Not authorized" }), {
-          status: 401,
-          headers: { "Content-Type": "application/json" },
-        });
-      }
     } else {
-      return new NextResponse(JSON.stringify({ error: "Not authorized" }), {
-        status: 401,
+      const { title, content } = await request.json();
+      const result = await prisma.article.update({
+        where: { id: params.slug },
+        data: { title: title, content: content },
+      });
+      return new NextResponse(JSON.stringify({ article_id: result.id }), {
+        status: 200,
         headers: { "Content-Type": "application/json" },
       });
     }
@@ -69,32 +35,20 @@ export async function PUT(
   }
 }
 
-export async function GET(
-  request: Request,
-  { params }: { params: { slug: string } }
-) {
+export async function GET(request: Request, { params }: { params: Params }) {
   try {
-    const id = params.slug;
-
-    const article = await prisma.article.findUnique({
-      where: { id: id },
-      select: {
-        title: true,
-        content: true,
-      },
-    });
-
+    const article = await get_article(params.slug);
     if (!article) {
       return new NextResponse(JSON.stringify({ error: "Article not found" }), {
         status: 404,
         headers: { "Content-Type": "application/json" },
       });
+    } else {
+      return new NextResponse(JSON.stringify(article), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
     }
-
-    return new NextResponse(JSON.stringify(article), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
-    });
   } catch (error: any) {
     return new NextResponse(JSON.stringify({ error: error }), {
       status: 500,
