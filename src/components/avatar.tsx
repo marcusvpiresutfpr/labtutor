@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { signOut } from "next-auth/react";
 import { DefaultUser } from "next-auth";
@@ -25,7 +26,10 @@ const Avatar = ({ user }: AvatarProps) => {
           tabIndex={0}
           className="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
           <li>
-            <a className="justify-between">Perfil</a>
+            <Link href="/tutor/usuario" className="justify-between">Perfil</Link>
+          </li>
+          <li>
+            <Link href="/tutor/usuario/artigo" className="justify-between">Escrever Artigo</Link>
           </li>
           <li onClick={() => signOut()}>
             <a>Logout</a>

@@ -1,16 +1,17 @@
-import { get_article } from "@/lib/article";
+import { getArticleById } from "@/lib/db";
 import { redirect } from "next/navigation";
 
 import ArticleEditor from "./editor";
+import ErrorPage from "@/components/error";
 
 const ArticleEditorPage = async ({ params }: { params: { slug: string } }) => {
   try {
-    const article = await get_article(params.slug);
-    if (!article) throw new Error("Artigo não encontrado!");
+    const article = await getArticleById(params.slug);
+    if (!article || article.status !== "rascunho") throw new Error("Artigo não encontrado!");
     
     return <ArticleEditor article={article} />
   } catch (error: any) {
-    redirect("/acesso-restrito");
+    return <ErrorPage title="Acesso negado" message="Você não pode editar esse artigo." />;
   }
 };
 

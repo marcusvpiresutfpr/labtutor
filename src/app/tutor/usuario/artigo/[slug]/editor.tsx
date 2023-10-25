@@ -7,16 +7,11 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 
 import { EditorContent, useEditor } from "@tiptap/react";
-import { useEffect, useState } from "react";
-import { redirect } from "next/navigation";
+import { useState } from "react";
+import { Article } from "@/lib/db";
 
 interface ArticleEditorProps {
-  article: {
-    content: String | null;
-    author: { email: string | null };
-    title: string;
-    id: string;
-  };
+  article: Article;
 }
 
 const ArticleEditor = ({ article }: ArticleEditorProps) => {
@@ -30,16 +25,17 @@ const ArticleEditor = ({ article }: ArticleEditorProps) => {
   const handleSave = async () => {
     if (disabled) return;
     setDisabled(true);
+    const articleData = {
+      content: editor?.getHTML() || "",
+      title: title,
+    }
     toast
       .promise(
         fetch(`/api/article/${article.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            content: editor?.getHTML() || "",
-            title: title,
-          }),
-        }),
+          body: JSON.stringify(articleData),
+        }).then(async (res) => console.log(await res.json())),
         {
           loading: "Salvando...",
           success: "Artigo salvo com sucesso!",
@@ -55,7 +51,7 @@ const ArticleEditor = ({ article }: ArticleEditorProps) => {
         <nav className="navbar bg-neutral text-neutral-content">
           <div className="navbar-start">
             <Link
-              href="/usuario/artigos"
+              href="/tutor/usuario"
               className="btn btn-neutral btn-circle text-3xl hover-bg-red-800">
               <i className="ri-close-line"></i>
             </Link>

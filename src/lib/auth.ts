@@ -1,8 +1,10 @@
 import GoogleProvider from "next-auth/providers/google";
 import prisma from "./prisma";
 
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import { getServerSession as _getServerSession } from "next-auth/next";
 import { NextAuthOptions } from "next-auth";
+import { getUserByEmail } from "./db";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -15,8 +17,10 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async session({ session, user, token }) {
-      const userRecord = await prisma.user.findUnique({ where: { email: user.email } });
-      return { ...session, user: { ...session.user, role: userRecord?.role } };
-    }
+      const userRecord = await getUserByEmail(user.email);
+      return { ...session, user: userRecord };
+    },
   },
 };
+
+export const getServerSession = async () => (await _getServerSession(authOptions))?.user;

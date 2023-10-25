@@ -1,14 +1,10 @@
 import NextAuth from "next-auth"
 
+import { User } from "@/lib/db"
+
 declare module "next-auth" {
   interface Session {
     expires: string,
-    user: {
-      id: string
-      name: string
-      email: string
-      image: string
-      role: string
-    }
+    user: User | null
   }
 }
