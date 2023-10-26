@@ -80,35 +80,35 @@ const ArticleEditor = ({ article }: ArticleEditorProps) => {
               <i className="ri-close-line"></i>
             </Link>
           </div>
-          <div className="navbar-center">LABTUTOR</div>
+          <div className="navbar-center hidden lg:block">LABTUTOR</div>
           <div className="navbar-end">
             <button className={`btn`} onClick={handleSave}>
               <i className="ri-save-line w-6"></i>
-              SALVAR
+              <span className="max-sm:hidden">SALVAR</span>
             </button>
             {status === "rascunho" ? (
               <button
                 className={`btn btn-primary ml-4`}
                 onClick={() => handleStatusChange("publico")}>
                 <i className="ri-eye-line w-6"></i>
-                PUBLICAR
+                <span>PUBLICAR</span>
               </button>
             ) : (
               <button
                 className={`btn btn-primary ml-4`}
                 onClick={() => handleStatusChange("rascunho")}>
                 <i className="ri-eye-off-line w-6"></i>
-                DESPUBLICAR
+                <span>DESPUBLICAR</span>
               </button>
             )}
           </div>
         </nav>
         <MenuBar editor={editor} />
-        <article className="flex-grow m-4" style={{ width: "50rem" }}>
+        <article className="flex-grow m-4 w-full max-w-prose">
           <input
             type="text"
             placeholder="Escreva o título aqui!"
-            className="input input-lg input-bordered w-full rounded-box"
+            className="input input-lg input-bordered w-full "
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />

@@ -25,17 +25,24 @@ const ProfileForms = ({ user }: { user: User }) => {
   };
 
   return (
-    <section className="grow max-w-md flex justify-center items-center flex-col m-4">
+    <>
       <h2 className="text-4xl font-bold mb-12">PERFIL</h2>
       <div className="avatar">
         <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-          {/* Exiba a imagem do usuário aqui */}
-          <Image src={updatedUser.image || ""} alt="Imagem de perfil" className="rounded-full" fill />
-          {/* Adicione um input para atualizar a imagem */}
-          <input type="file" className="file-input" onChange={handleImageChange} />
+          <Image
+            src={updatedUser.image || ""}
+            alt="Imagem de perfil"
+            className="rounded-full"
+            fill
+          />
         </div>
       </div>
       <form className="w-full max-w-xs">
+        <input
+          type="file"
+          className="file-input file-input-bordered file-input-s w-full max-w-ns my-5"
+          onChange={handleImageChange}
+        />
         <div className="form-control">
           <label className="label">
             <span className="label-text">NOME</span>
@@ -44,7 +51,9 @@ const ProfileForms = ({ user }: { user: User }) => {
             type="text"
             className="input input-bordered w-full mb-4"
             value={updatedUser.name || ""}
-            onChange={(e) => setUpdatedUser({ ...updatedUser, name: e.target.value })}
+            onChange={(e) =>
+              setUpdatedUser({ ...updatedUser, name: e.target.value })
+            }
           />
         </div>
         <div className="form-control">
@@ -55,7 +64,9 @@ const ProfileForms = ({ user }: { user: User }) => {
             type="text"
             className="input input-bordered w-full mb-4"
             value={updatedUser.email || ""}
-            onChange={(e) => setUpdatedUser({ ...updatedUser, email: e.target.value })}
+            onChange={(e) =>
+              setUpdatedUser({ ...updatedUser, email: e.target.value })
+            }
           />
         </div>
         <div className="form-control">
@@ -65,8 +76,7 @@ const ProfileForms = ({ user }: { user: User }) => {
           <select
             className="select select-bordered w-full mb-4"
             value={updatedUser.role || 10}
-            onChange={handleRoleChange}
-          >
+            onChange={handleRoleChange}>
             <option value={10}>Escritor</option>
             <option value={20}>Administrador</option>
           </select>
@@ -75,7 +85,7 @@ const ProfileForms = ({ user }: { user: User }) => {
       <button className="btn btn-primary" onClick={handleUpdate}>
         Atualizar
       </button>
-    </section>
+    </>
   );
 };
 

@@ -16,7 +16,7 @@ interface DropdowmProps {
 }
 
 const Dropdowm = (props: DropdowmProps) => (
-  <details className="dropdown">
+  <details className="dropdown dropdown-end">
     <summary className="m-1 btn rounded-full btn-ghost"><i className="ri-settings-3-line text-xl"></i></summary>
     <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
       <li><Link href={`/tutor/escritor/artigo/${props.article.id}`}>Editar</Link></li>
@@ -42,7 +42,7 @@ const ArticlesTable = (props: TableProps) => {
         <tbody>
           {props.articles.map((article) => (
             <tr key={article.id}>
-              <th className="w-80">{article.title}</th>
+              <th className="w-80 text-ellipsis">{article.title}</th>
               <th>{article.status}</th>
               <th>
                 <Dropdowm

@@ -14,3 +14,7 @@ body  {
 .tiptap.ProseMirror:focus {
   outline: none;
 }
+
+.invisible-scrollbar::-webkit-scrollbar {
+  display: none;
+}
