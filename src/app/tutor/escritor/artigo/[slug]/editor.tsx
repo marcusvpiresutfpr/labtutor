@@ -8,13 +8,14 @@ import Link from "next/link";
 
 import { EditorContent, useEditor } from "@tiptap/react";
 import { useState } from "react";
-import { Article } from "@/lib/db";
+import { Article } from "@/lib/db/writer";
 
 interface ArticleEditorProps {
   article: Article;
 }
 
 const ArticleEditor = ({ article }: ArticleEditorProps) => {
+  const [status, setStatus] = useState<string>(article.status);
   const [disabled, setDisabled] = useState<boolean>(false);
   const [title, setTitle] = useState<string>(article.title);
   const editor = useEditor({
@@ -25,16 +26,16 @@ const ArticleEditor = ({ article }: ArticleEditorProps) => {
   const handleSave = async () => {
     if (disabled) return;
     setDisabled(true);
-    const articleData = {
-      content: editor?.getHTML() || "",
-      title: title,
-    }
+
     toast
       .promise(
-        fetch(`/api/article/${article.id}`, {
+        fetch(`/api/writer/article/${article.id}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(articleData),
+          body: JSON.stringify({
+            content: editor?.getHTML() || "",
+            title: title,
+          }),
         }).then(async (res) => console.log(await res.json())),
         {
           loading: "Salvando...",
@@ -45,13 +46,36 @@ const ArticleEditor = ({ article }: ArticleEditorProps) => {
       .finally(() => setDisabled(false));
   };
 
+  const handleStatusChange = async (status: string) => {
+    if (disabled) return;
+    setDisabled(true);
+
+    toast
+      .promise(
+        fetch(`/api/writer/article/${article.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            status: status,
+          }),
+        }).then(async (res) => console.log(await res.json())),
+        {
+          loading: "Salvando...",
+          success: "Artigo salvo com sucesso!",
+          error: "Erro ao salvar o artigo!",
+        }
+      )
+      .then(() => setStatus(status))
+      .finally(() => setDisabled(false));
+  };
+
   if (editor) {
     return (
       <main className="min-h-screen min-w-screen flex flex-col items-center bg-base-200">
         <nav className="navbar bg-neutral text-neutral-content">
           <div className="navbar-start">
             <Link
-              href="/tutor/usuario"
+              href="/tutor/escritor"
               className="btn btn-neutral btn-circle text-3xl hover-bg-red-800">
               <i className="ri-close-line"></i>
             </Link>
@@ -62,12 +86,21 @@ const ArticleEditor = ({ article }: ArticleEditorProps) => {
               <i className="ri-save-line w-6"></i>
               SALVAR
             </button>
-            <button
-              className={`btn btn-primary ml-4`}
-              onClick={() => toast("Here is your toast.")}>
-              <i className="ri-earth-line w-6"></i>
-              PUBLICAR
-            </button>
+            {status === "rascunho" ? (
+              <button
+                className={`btn btn-primary ml-4`}
+                onClick={() => handleStatusChange("publico")}>
+                <i className="ri-eye-line w-6"></i>
+                PUBLICAR
+              </button>
+            ) : (
+              <button
+                className={`btn btn-primary ml-4`}
+                onClick={() => handleStatusChange("rascunho")}>
+                <i className="ri-eye-off-line w-6"></i>
+                DESPUBLICAR
+              </button>
+            )}
           </div>
         </nav>
         <MenuBar editor={editor} />

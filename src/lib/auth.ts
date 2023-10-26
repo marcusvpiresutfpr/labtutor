@@ -3,7 +3,6 @@ import prisma from "./prisma";
 
 import { getServerSession as _getServerSession } from "next-auth/next";
 import { NextAuthOptions } from "next-auth";
-import { getUserByEmail } from "./db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 export const authOptions: NextAuthOptions = {
@@ -17,7 +16,7 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async session({ session, user, token }) {
-      const userRecord = await getUserByEmail(user.email);
+      const userRecord = await prisma.user.findUnique({ where: { email: user.email } });
       return { ...session, user: userRecord };
     },
   },
