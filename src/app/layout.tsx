@@ -1,6 +1,5 @@
 import "@/styles/globals.css";
 
-import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
 
 import type { Metadata } from "next";
@@ -16,12 +15,10 @@ interface Props {
   children: React.ReactNode;
 }
 
-const RootLayout = ({ children }: Props) => {
+const RootLayout = async ({ children }: Props) => {
   return (
     <html lang="pt-br">
-      <body className={inter.className}>
-        <SessionProvider>{children}</SessionProvider>
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 };

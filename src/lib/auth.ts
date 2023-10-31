@@ -1,10 +1,14 @@
 // Path: src/pages/api/auth/[...nextauth].ts
 
 import GoogleProvider from "next-auth/providers/google";
+import prisma from "./prisma";
+
 import { NextAuthOptions } from "next-auth";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
+  adapter: PrismaAdapter(prisma),
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -12,13 +16,6 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user, session }) {
-      // the processing of JWT occurs before handling sessions.
-      console.log("jwt callback ", { token, user, session });
-      if (user) token.id = user.id;
-      return token;
-    },
-
     session: async ({ session, token, user }) => {
       //  The session receives the token from JWT
       console.log("session callback ", { token, user, session });
@@ -26,12 +23,11 @@ export const authOptions: NextAuthOptions = {
         ...session,
         user: {
           ...session.user,
-          accessToken: token.accessToken as string,
-          refreshToken: token.refreshToken as string,
           id: token.id,
         },
         error: token.error,
       };
     },
   },
+  debug: process.env.NODE_ENV === "development",
 };
