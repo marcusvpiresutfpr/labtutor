@@ -1,6 +1,6 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 
-const HomePage = () => {
+const TutorPage = () => {
   const { data: session } = useSession();
 
   if (session && session.user) {
@@ -9,7 +9,7 @@ const HomePage = () => {
 
   return (
     <main>
-      <h1>Home</h1>
+      <h1>Tutor Page</h1>
       {session && session.user ? (
         <p>
           Signed in as {session.user.email} <br />
@@ -22,4 +22,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default TutorPage;

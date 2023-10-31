@@ -1,0 +1,12 @@
+{
+  "files.exclude": {
+    ".eslintrc.json": true,
+    ".gitignore": true,
+    "next-env.d.ts": true,
+    "tsconfig.json": true,
+    "postcss.config.js": true,
+    "package-lock.json": true,
+    "node_modules": true,
+    ".git": true
+  }
+}
