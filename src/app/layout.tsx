@@ -1,5 +1,9 @@
+import "remixicon/fonts/remixicon.css";
 import "@/styles/globals.css";
 
+
+import { NextAuthProvider } from "./providers";
+import { Toaster } from "react-hot-toast";
 import { Inter } from "next/font/google";
 
 import type { Metadata } from "next";
@@ -18,7 +22,10 @@ interface Props {
 const RootLayout = async ({ children }: Props) => {
   return (
     <html lang="pt-br">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <NextAuthProvider>{children}</NextAuthProvider>
+        <Toaster />
+      </body>
     </html>
   );
 };
